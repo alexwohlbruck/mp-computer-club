@@ -1,0 +1,41 @@
+<div
+    class="window md-whiteframe-5dp"
+    ng-click="focusWindow()"
+    data-drag="true"
+    jqyoui-draggable
+    style="top: {{windowData.top}}px; left: {{windowData.left}}px; max-width: {{windowData.width}}px; height: {{windowData.height}}px"
+    ng-style="{'z-index': windowData.layer}">
+    
+    
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h5 class="title">{{windowData.program}}</h5>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="$root.windows.close(windowData.index)" ng-disabled="$root.windows.items.length == 1">
+                <md-icon class="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    
+    <section class="text md-padding" ng-style="{'max-height': (windowData.height - 77)+'px'}">
+        <div class="output">
+            <span class="terminal" ng-show="windowData.program == 'terminal'" ng-repeat="line in windowData.output track by $index">
+                <p ng-if="line !== null">{{line}}</p>
+                <br ng-if="line === null"/>
+            </span>
+            
+            <span class="chat" ng-show="windowData.program == 'chat'">
+                <p>You have entered chat. Enter "exit" to return to terminal</p>
+                <br/>
+                <p ng-repeat="message in messages">{{message.user}}: {{message.text}}</p>
+            </span>
+        </div>
+        
+        <br/>
+        
+        <form ng-submit="runCommand()">
+            <span>&gt; </span>
+            <input class="input" type="text" ng-model="windowData.input" placeholder="{{windowData.inputPlaceholder ? windowData.inputPlaceholder : ''}}" autofocus/>
+        </form>
+    </section>
+</div>
